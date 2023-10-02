@@ -1,0 +1,15 @@
+[package]
+name = "sputnikdao-factory2"
+version = "0.2.0"
+authors = ["Illia Polosukhin <illia.polosukhin@gmail.com>"]
+edition = "2018"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = { version = "4.0.0-pre.4", features = ["unstable"]  }
+
+[dev-dependencies]
+near-sdk-sim = "4.0.0-pre.4"
