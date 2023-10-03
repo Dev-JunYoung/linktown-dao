@@ -87,7 +87,7 @@ pub struct PolicyParameters {
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
 #[cfg_attr(not(target_arch = "wasm32"), derive(Clone, Debug))]
 #[serde(crate = "near_sdk::serde")]
-pub enum ProposalKind {
+    pub enum ProposalKind {
     /// DAO 설정 변경.
     /// Change the DAO config.
     ChangeConfig { config: Config },

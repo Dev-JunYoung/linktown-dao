@@ -134,8 +134,14 @@ pub struct VotePolicy {
     ///     This allows to avoid situation where the number of staked tokens from total supply is too small.
     /// If RoleWeight - this is minimum number of votes.
     ///     This allows to avoid situation where the role is got too small but policy kept at 1/2, for example.
+    /// 투표를 완료하는 데 필요한 최소 개수입니다.
+    /// weight 종류가 TokenWeight인 경우 - 필요한 토큰의 최소 개수입니다.
+    ///     이를 통해 총 공급에서 스테이킹된 토큰의 수가 너무 적은 상황을 방지할 수 있습니다.
+    /// RoleWeight인 경우 - 최소 득표수입니다.
+    ///     이를 통해 역할이 너무 작지만 정책이 1/2 수준으로 유지되는 상황을 방지할 수 있습니다.
     pub quorum: U128,
     /// How many votes to pass this vote.
+    /// 이 투표를 몇 표를 통과해야 합니까.
     pub threshold: WeightOrRatio,
 }
 
@@ -143,7 +149,9 @@ impl Default for VotePolicy {
     fn default() -> Self {
         VotePolicy {
             weight_kind: WeightKind::RoleWeight,
-            quorum: U128(0),
+            // quorum 필드의 기본값으로 0을 설정합니다. 
+            // 쿼럼(quorum)은 투표에 유효하게 간주되기 위해 필요한 최소 투표 참여량을 나타냅니다.
+            quorum: U128(0), 
             threshold: WeightOrRatio::Ratio(1, 2),
         }
     }
