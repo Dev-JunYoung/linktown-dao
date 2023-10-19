@@ -342,7 +342,6 @@ impl SputnikDAOFactory {
     pub fn get_dao_list(&self) -> Vec<AccountId> {
         self.daos.to_vec()
     }
-
     /// Get number of created DAOs.
     /// 생성된 총 DAO 수를 검색합니다.
     pub fn get_number_daos(&self) -> u64 {

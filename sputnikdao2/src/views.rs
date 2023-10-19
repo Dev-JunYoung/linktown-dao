@@ -96,6 +96,7 @@ impl Contract {
 
     /// Get proposals in paginated view.
     pub fn get_proposals(&self, from_index: u64, limit: u64) -> Vec<ProposalOutput> {
+        env::log_str("Function: get_proposals 9");
         (from_index..min(self.last_proposal_id, from_index + limit))
             .filter_map(|id| {
                 self.proposals.get(&id).map(|proposal| ProposalOutput {
@@ -104,6 +105,7 @@ impl Contract {
                 })
             })
             .collect()
+            
     }
 
     /// Get specific proposal.

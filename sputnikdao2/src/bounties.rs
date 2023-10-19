@@ -8,7 +8,7 @@ use crate::*;
 
 /// Information recorded about claim of the bounty by given user.
 /// 주어진 사용자에 의한 바운티 클레임에 대한 기록된 정보입니다.
-#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize)]
+#[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize,Debug)]
 #[serde(crate = "near_sdk::serde")]
 pub struct BountyClaim {
     /// Bounty id that was claimed.

@@ -85,7 +85,6 @@ pub struct Contract {
     /// Count of claims per bounty.
     /// 바운티별 청구 횟수.
     pub bounty_claims_count: LookupMap<u64, u32>,
-
     /// Large blob storage.
     /// 대용량 블롭 저장소.
     pub blobs: LookupMap<CryptoHash, AccountId>,

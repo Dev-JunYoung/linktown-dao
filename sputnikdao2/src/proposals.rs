@@ -133,6 +133,8 @@ pub struct PolicyParameters {
     /// For `ft_transfer` and `ft_transfer_call` `memo` is the `description` of the proposal.
     Transfer {
         /// $NEAR을 위한 ""일 수 있거나 유효한 계정 ID일 수 있습니다.
+        /// Transfer 구조체를 보면, 다음의 필드들이 있습니다:
+        /// token_id: $NEAR로 전송하려면 빈 문자열 ("")을 사용하거나, 다른 토큰을 전송하려면 유효한 계정 ID를 사용해야 합니다.
         /// Can be "" for $NEAR or a valid account id.
         token_id: OldAccountId,
         receiver_id: AccountId,
@@ -158,7 +160,6 @@ pub struct PolicyParameters {
     /// 실행 없이 단순한 신호 투표.
     /// Just a signaling vote, with no execution.
     Vote,
-
     /// 팩토리 및 자동 업데이트에 대한 정보 변경.
     /// Change information about factory and auto update.
     FactoryInfoUpdate { factory_info: FactoryInfo },
@@ -251,6 +252,9 @@ pub struct Proposal {
     /// Map of who voted and how.
     /// 누가 어떻게 투표했는지 
     pub votes: HashMap<AccountId, Vote>,
+    /// Time of the vote for each account.
+    /// 각 계정에 대한 투표 시간입니다.
+    pub vote_times: HashMap<AccountId, U64>,
     /// Submission time (for voting period).
     pub submission_time: U64,    
 }
@@ -336,6 +340,7 @@ impl From<ProposalInput> for Proposal {
             status: ProposalStatus::InProgress,
             vote_counts: HashMap::default(),
             votes: HashMap::default(),
+            vote_times:HashMap::default(),
             submission_time: U64::from(env::block_timestamp()),
         }
     }
@@ -628,6 +633,9 @@ impl Contract {
             _ => {}
         };
 
+
+        let user_info = self.internal_user_info();
+        env::log_str(&format!("user_info:{:?}",user_info));
         // 2. 호출자가 이 유형의 제안을 추가할 권한이 있는지 확인합니다.
         // 2. Check permission of caller to add this type of proposal.
         assert!(
@@ -703,6 +711,9 @@ impl Contract {
                 // 제안에 대한 투표를 업데이트합니다.
                 proposal.status =
                     policy.proposal_status(&proposal, roles, self.total_delegation_amount);
+                      // Update the vote time for the account.
+                    proposal.vote_times.insert(sender_id.clone(), near_sdk::json_types::U64(env::block_timestamp()));
+
                 // Determine the proposal's new status.
                 // 제안의 새로운 상태를 결정합니다.
                 if proposal.status == ProposalStatus::Approved {
@@ -719,7 +730,7 @@ impl Contract {
                     // Still in progress or expired.
                     // 여전히 진행 중 또는 만료됨.
                     true
-                }
+                }          
             }
             // There are two cases when proposal must be finalized manually: expired or failed.
             // In case of failed, we just recompute the status and if it still approved, we re-execute the proposal.

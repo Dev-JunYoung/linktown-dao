@@ -80,7 +80,7 @@ pub struct RolePermission {
     /// 각 제안 유형에 대해 투표 정책을 정의합니다.
     pub vote_policy: HashMap<String, VotePolicy>,
 }
-
+#[derive(Debug)]
 pub struct UserInfo {
     pub account_id: AccountId,
     pub amount: Balance,

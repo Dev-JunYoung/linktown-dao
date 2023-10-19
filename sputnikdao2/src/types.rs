@@ -30,8 +30,10 @@ pub struct Config {
     /// 일반 메타데이터. 특정 UI에서 추가 데이터를 저장하는 데 사용할 수 있습니다.
     /// 이것은 계약서상의 어떤 것에도 사용되지 않습니다.
     pub metadata: Base64VecU8,
+    /// Logo image URL for the DAO.
+    /// DAO의 로고 이미지 URL.
+    pub logo_url: String,
 }
-
 
 /// Set of possible action to take.
 #[derive(BorshSerialize, BorshDeserialize, Serialize, Deserialize, Debug)]
@@ -89,6 +91,7 @@ impl Config {
             name: "Test".to_string(),
             purpose: "to test".to_string(),
             metadata: Base64VecU8(vec![]),
+            logo_url:"url".to_string(),
         }
     }
 }
